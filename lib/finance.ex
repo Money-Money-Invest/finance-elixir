@@ -109,7 +109,7 @@ defmodule Finance do
   #   {:error, "I give up"}
   # end
   defp calculate(:xirr, dates_values, _acc , {rate, bottom, upper} , tries) do
-    IO.inspect({dates_values,rate, bottom, upper , tries})
+    IO.inspect({rate, bottom, upper , tries})
     acc = reduce_date_values(dates_values, rate)
     resp = cond do
       acc < 0 ->
