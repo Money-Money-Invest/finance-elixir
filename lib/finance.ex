@@ -34,9 +34,10 @@ defmodule Finance do
   def xirr(dates, values) do
     dates = dates
             |> pmap(&Date.from_erl!/1)
-        min_date = Enum.min(dates)
+        min_date = Enum.sort(dates, Date) |> Enum.at(0)
         {dates, values, dates_values} =
           compact_flow(Enum.zip(dates, values), min_date)
+        [head | _] = dates_values
         cond do
           !verify_flow(values) ->
             {:error, "Values should have at least one positive or negative value."}
@@ -49,7 +50,7 @@ defmodule Finance do
 
   defp compact_flow(dates_values, min_date) do
     flow = Enum.reduce(dates_values, %{}, &organize_value(&1, &2, min_date))
-    {Map.keys(flow), Map.values(flow), Enum.filter(flow, &(elem(&1, 1) != 0))}
+    {Map.keys(flow), Map.values(flow), Enum.filter(flow, &(elem(&1, 1) != 0)) |> Enum.sort(fn (x, y) -> elem(x, 0) < elem(y, 0) end)}
   end
 
   defp organize_value({date, value}, map, min_date) do
@@ -109,7 +110,7 @@ defmodule Finance do
   #   {:error, "I give up"}
   # end
   defp calculate(:xirr, dates_values, _acc , {rate, bottom, upper} , tries) do
-    IO.inspect({rate, bottom, upper , tries}, label: "=======RUNNIG....: ")
+    # IO.inspect({dates_values, rate, bottom, upper , tries}, label: "=======RUNNIG....: ")
     acc = reduce_date_values(dates_values, rate)
     resp = cond do
       acc < 0 ->
