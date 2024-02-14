@@ -2,17 +2,25 @@ defmodule Finance.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :finance,
-     version: "0.0.4",
-     elixir: "~> 1.3",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     description: "A library to calculate Xirr through the bisection method using parallel processes.",
-     test_coverage: [tool: ExCoveralls],
-     preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.html": :test],
-     package: package(),
-     description: description(),
-     deps: deps()]
+    [
+      app: :finance,
+      version: "0.0.4",
+      elixir: "~> 1.3",
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      description:
+        "A library to calculate Xirr through the bisection method using parallel processes.",
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ],
+      package: package(),
+      description: description(),
+      deps: deps()
+    ]
   end
 
   def application do
